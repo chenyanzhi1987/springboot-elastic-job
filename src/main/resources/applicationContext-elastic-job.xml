@@ -50,7 +50,7 @@
                 overwrite="${simple.overwrite}"
                 event-trace-rdb-data-source="elasticJobLog" />
 
-    <!-- 配置简单作业 2-->
+    <!-- 配置带监听的简单作业 2-->
     <job:simple id="${simple2.id}"
                 class="${simple2.class}"
                 registry-center-ref="regCenter"
@@ -63,7 +63,14 @@
                 description="${simple2.description}"
                 disabled="${simple2.disabled}"
                 overwrite="${simple2.overwrite}"
-                event-trace-rdb-data-source="elasticJobLog" />
+                event-trace-rdb-data-source="elasticJobLog">
+        <!--配置本地监听器-->
+        <job:listener class="com.uxin.springbootelasticjob.listener.MyElasticJobListener"/>
+
+        <!--配置分布式监听器-->
+        <job:distributed-listener class="com.uxin.springbootelasticjob.listener.MyDistributeOnceElasticJobListener"
+                                  started-timeout-milliseconds="2000" completed-timeout-milliseconds="2000"/>
+    </job:simple>
 
     <!-- 配置数据流作业-->
     <job:dataflow id="${dataflow.id}"
